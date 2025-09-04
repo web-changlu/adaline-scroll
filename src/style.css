@@ -73,6 +73,24 @@ body {
 
 * { scrollbar-color: var(--accent) rgba(122, 162, 255, .08); scrollbar-width: thin; }
 
+/* 回到顶部按钮 */
+.back-to-top {
+  position: fixed; right: 20px; bottom: 24px; z-index: 60; width: 40px; height: 40px;
+  display: grid; place-items: center; border-radius: 999px; cursor: pointer;
+  background: var(--accent); color: #0b0f19; border: 1px solid rgba(255,255,255,.25);
+  box-shadow: 0 10px 30px rgba(122,162,255,.35);
+  transition: transform .24s cubic-bezier(.22,.61,.36,1), opacity .24s cubic-bezier(.22,.61,.36,1), box-shadow .24s cubic-bezier(.22,.61,.36,1), background-color .24s cubic-bezier(.22,.61,.36,1);
+  opacity: 0; pointer-events: none; transform: translateY(8px) scale(.92);
+}
+.back-to-top:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 14px 36px rgba(122,162,255,.45); }
+.back-to-top:active { transform: translateY(0) scale(.98); box-shadow: 0 10px 26px rgba(122,162,255,.40); }
+.back-to-top:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(255,255,255,.5), 0 10px 30px rgba(122,162,255,.35); }
+.back-to-top.show { opacity: 1; pointer-events: auto; transform: translateY(0) scale(1); }
+
+@media (prefers-reduced-motion: reduce) {
+  .back-to-top { transition: none; transform: none; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .snap-container { scroll-behavior: auto; }
   .reveal { transition: none; }

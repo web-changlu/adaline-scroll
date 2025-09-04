@@ -18,6 +18,7 @@ const sections = [
 const activeId = ref(sections[0].id)
 const localProgress = ref(0)
 let rafId = 0
+let backTopEl = null
 
 function updateActiveSection() {
   rafId = 0
@@ -54,12 +55,19 @@ function updateActiveSection() {
 
 function onScroll() {
   if (rafId) return
-  rafId = requestAnimationFrame(updateActiveSection)
+  rafId = requestAnimationFrame(() => {
+    updateActiveSection()
+    // 控制回到顶部按钮显隐
+    const show = window.scrollY > window.innerHeight * 0.8
+    const el = backTopEl || document.querySelector('.back-to-top')
+    if (el) el.classList.toggle('show', show)
+  })
 }
 
 onMounted(() => {
   window.addEventListener('scroll', onScroll, { passive: true })
   window.addEventListener('resize', onScroll)
+  backTopEl = document.querySelector('.back-to-top')
   updateActiveSection()
 })
 
@@ -98,6 +106,10 @@ function scrollToId(id) {
   <div class="nav-dots" aria-label="页面导航">
     <button v-for="s in sections" :key="s.id + '-dot'" class="dot" :class="{ active: activeId === s.id }" :aria-label="'跳转到 ' + s.id" @click="scrollToId(s.id)"></button>
   </div>
+
+  <button class="back-to-top" aria-label="回到顶部" @click="scrollToId('hero')">
+    ↑
+  </button>
 </template>
 
 <style scoped>

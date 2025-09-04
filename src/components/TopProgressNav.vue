@@ -27,20 +27,22 @@ function segFill(p, segIndex, segCount = 3) {
       </div>
       <div class="meta">
         <div class="name">{{ s.label }}</div>
-        <div class="meta-row" v-if="s.id === activeId">
-          <div class="bars">
-            <span class="bar">
-              <i :style="{ transform: `scaleX(${segFill(progress, 0)})` }"></i>
-            </span>
-            <span class="bar">
-              <i :style="{ transform: `scaleX(${segFill(progress, 1)})` }"></i>
-            </span>
-            <span class="bar">
-              <i :style="{ transform: `scaleX(${segFill(progress, 2)})` }"></i>
-            </span>
+        <transition name="fade-slide" mode="out-in">
+          <div class="meta-row" v-if="s.id === activeId">
+            <div class="bars">
+              <span class="bar">
+                <i :style="{ transform: `scaleX(${segFill(progress, 0)})` }"></i>
+              </span>
+              <span class="bar">
+                <i :style="{ transform: `scaleX(${segFill(progress, 1)})` }"></i>
+              </span>
+              <span class="bar">
+                <i :style="{ transform: `scaleX(${segFill(progress, 2)})` }"></i>
+              </span>
+            </div>
+            <div class="fraction">{{ i + 1 }} / {{ sections.length }}</div>
           </div>
-          <div class="fraction">{{ i + 1 }} / {{ sections.length }}</div>
-        </div>
+        </transition>
       </div>
     </div>
   </nav>
@@ -53,12 +55,15 @@ function segFill(p, segIndex, segCount = 3) {
   color: #c8d2c6; pointer-events: none; /* 容器不拦截，子元素可点击 */
 }
 .step { display: flex; align-items: center; gap: 10px; opacity: .5; pointer-events: auto; }
+.step, .name { transition: opacity .2s cubic-bezier(.22,.61,.36,1), color .2s cubic-bezier(.22,.61,.36,1); }
 .step.active { opacity: 1; }
 .circle {
   width: 32px; height: 32px; border-radius: 999px;
   border: 1px dashed #cfd9c9; display: grid; place-items: center; color: #202a21; background: rgba(228,238,228,.5);
   box-shadow: inset 0 0 0 2px rgba(21,41,24,.6);
+  transition: background-color .25s cubic-bezier(.22,.61,.36,1), border-color .25s cubic-bezier(.22,.61,.36,1), box-shadow .25s cubic-bezier(.22,.61,.36,1);
 }
+.step.active .circle { background: rgba(228,238,228,.7); box-shadow: inset 0 0 0 2px rgba(21,41,24,.75); }
 .num { font-size: 12px; font-weight: 700; }
 .meta { display: grid; gap: 2px; }
 .name { color: #cfd9c9; font-weight: 600; font-size: 13px; }
@@ -66,7 +71,7 @@ function segFill(p, segIndex, segCount = 3) {
 .bars { display: flex; align-items: center; gap: 6px; height: 8px; }
 .bar { width: 64px; height: 2px; background: #dfe7ff; display: block; overflow: hidden; border-radius: 2px; }
 /* 进度颜色与全局 active 高亮一致（使用 --accent） */
-.bar i { display: block; height: 100%; width: 100%; background: var(--accent); transform-origin: left center; transform: scaleX(0); }
+.bar i { display: block; height: 100%; width: 100%; background: var(--accent); transform-origin: left center; transform: scaleX(0); transition: transform .45s cubic-bezier(.22,.61,.36,1); backface-visibility: hidden; will-change: transform; }
 .fraction { color: #879487; font-size: 12px; }
 
 @media (max-width: 900px) {
@@ -74,6 +79,14 @@ function segFill(p, segIndex, segCount = 3) {
   .circle { width: 28px; height: 28px; }
   .num { font-size: 11px; }
   .bar { width: 52px; }
+}
+
+/* 过渡动画：切换阶段时轻微上移与淡入淡出 */
+.fade-slide-enter-active, .fade-slide-leave-active { transition: opacity .28s cubic-bezier(.22,.61,.36,1), transform .28s cubic-bezier(.22,.61,.36,1); will-change: opacity, transform; }
+.fade-slide-enter-from, .fade-slide-leave-to { opacity: 0; transform: translateX(6px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .step, .name, .circle, .bar i, .fade-slide-enter-active, .fade-slide-leave-active { transition: none !important; }
 }
 </style>
 

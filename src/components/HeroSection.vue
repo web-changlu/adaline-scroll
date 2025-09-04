@@ -118,7 +118,7 @@ onBeforeUnmount(() => {
 .visuals { position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none; }
 .visual {
   width: min(64vmin, 980px); height: min(40vmin, 680px); border-radius: 20px;
-  background-image: url(../assets/img/research-01.webp); background-size: cover; background-position: center; background-repeat: no-repeat;
+  background-image: url(../assets/img/search01.jfif); background-size: cover; background-position: center; background-repeat: no-repeat;
   border: 1px solid rgba(255,255,255,.06); box-shadow: 0 20px 80px rgba(0,0,0,.45);
   position: relative; overflow: hidden;
   will-change: transform, opacity; opacity: 0; transform: translateY(40px) scale(.96);
@@ -131,7 +131,7 @@ onBeforeUnmount(() => {
 }
 .layer-2 {
   width: min(56vmin, 900px); height: min(34vmin, 600px); border-radius: 18px;
-  background-image: url(../assets/img/research-02.webp); background-size: cover; background-position: center; background-repeat: no-repeat;
+  background-image: url(../assets/img/search02.jfif); background-size: cover; background-position: center; background-repeat: no-repeat;
   border: 1px solid rgba(255,255,255,.05);
 }
 
